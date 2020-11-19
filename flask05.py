@@ -98,7 +98,7 @@ def new_note():
         newEntry = Note(title, text, today)
         db.session.add(newEntry)
         db.session.commit()
-
+        #Test
         return redirect(url_for('get_notes'))
     else:
         a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()

@@ -22,8 +22,7 @@ with app.app_context():
 
 notes = {1: {'title': 'First note', 'text': 'This is my first note', 'date': '10-1-2020'},
          2: {'title': 'Second note', 'text': 'This is my second note', 'date': '10-2-2020'},
-         3: {'title': 'Third note', 'text': 'This is my third note', 'date': '10-3-2020'},
-         4: {'title': 'Forth note', 'text': 'This is my forth note', 'date': '10-4-2020'}
+         3: {'title': 'Third note', 'text': 'This is my third note', 'date': '10-3-2020'}
          }
 
 # @app.route is a decorator. It gives the function "index" special powers.

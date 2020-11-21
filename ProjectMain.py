@@ -103,6 +103,38 @@ def new_note():
         a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
         return render_template('new.html', user=a_user)
 
+# App route Display todo
+@app.route('/todo', methods=['GET', 'POST'])
+def get_todo():
+    # create mock user
+    a_user = {'name': 'Alec', 'email': 'aroseber@uncc.edu'}
+
+    # check method used for request
+    if request.method == 'POST':
+        # get title data
+        title = request.form['title']
+        # get note data
+        text = request.form['noteText']
+        # create date stamp
+        from datetime import date
+        today = date.today()
+        # format date mm/dd/yyy
+        today = today.strftime("%m-%d-%Y")
+        newEntry = Note(title, text, today)
+        db.session.add(newEntry)
+        db.session.commit()
+        return redirect(url_for('get_notes'))
+    else:
+        a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
+        return render_template('new.html', user=a_user)
+
+# App route new todo
+
+# App route edit todo
+
+
+
+
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 

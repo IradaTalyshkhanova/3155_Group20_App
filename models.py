@@ -19,3 +19,10 @@ class User(db.Model):
     def __init__(self, name, email):
         self.name = name
         self.email = email
+
+class Todo(db.Model):
+    id = db.Column("id", db.Integer, primary_key=True )
+    todoTitle = db.Column("todo title", db.String(100))
+
+#class Task(db.Model):
+    #id = db.Column("id")

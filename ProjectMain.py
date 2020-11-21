@@ -9,6 +9,7 @@ from flask import redirect, url_for
 from database import db
 from models import Note as Note
 from models import User as User
+from models import Todo as Todo
 
 app = Flask(__name__)     # create an app
 
@@ -104,31 +105,21 @@ def new_note():
         return render_template('new.html', user=a_user)
 
 # App route Display todo
-@app.route('/todo', methods=['GET', 'POST'])
-def get_todo():
-    # create mock user
-    a_user = {'name': 'Alec', 'email': 'aroseber@uncc.edu'}
+@app.route('/todo')
+def get_todos():
+    a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
+    my_todo = db.session.query(Todo).all()
 
-    # check method used for request
-    if request.method == 'POST':
-        # get title data
-        #title = request.form['title']
-        # get note data
-        text = request.form['noteText']
-        # create date stamp
-        from datetime import date
-        today = date.today()
-        # format date mm/dd/yyy
-        today = today.strftime("%m-%d-%Y")
-        newEntry = Note(title, text, today)
-        db.session.add(newEntry)
-        db.session.commit()
-        return redirect(url_for('get_notes'))
-    else:
-        a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
-        return render_template('todo.html', user=a_user)
+    return render_template('todos.html', notes=my_todo, user=a_user)
 
-# App route new todo
+# App route view specific todo
+@app.route('/todo/<todo_id>')
+def get_todo(todo_id):
+    #a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
+    #my_note = db.session.query(Note).filter_by(id=note_id).one()
+
+    return redirect(url_for('get_notes'))
+    #return render_template('note.html', note=my_note, user=a_user)
 
 # App route edit todo
 

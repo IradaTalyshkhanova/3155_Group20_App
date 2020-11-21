@@ -112,7 +112,7 @@ def get_todo():
     # check method used for request
     if request.method == 'POST':
         # get title data
-        title = request.form['title']
+        #title = request.form['title']
         # get note data
         text = request.form['noteText']
         # create date stamp
@@ -126,7 +126,7 @@ def get_todo():
         return redirect(url_for('get_notes'))
     else:
         a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
-        return render_template('new.html', user=a_user)
+        return render_template('todo.html', user=a_user)
 
 # App route new todo
 

@@ -115,11 +115,10 @@ def get_todos():
 # App route view specific todo
 @app.route('/todo/<todo_id>')
 def get_todo(todo_id):
-    #a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
-    #my_note = db.session.query(Note).filter_by(id=note_id).one()
+    a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
+    my_todo = db.session.query(Todo).filter_by(id=todo_id).one()
 
-    return redirect(url_for('get_notes'))
-    #return render_template('note.html', note=my_note, user=a_user)
+    return render_template('todo.html', note=my_todo, user=a_user)
 
 # App route edit todo
 

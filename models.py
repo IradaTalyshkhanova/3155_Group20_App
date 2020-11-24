@@ -26,3 +26,26 @@ class Todo(db.Model):
 
 #class Task(db.Model):
     #id = db.Column("id")
+
+class Budget(db.Model):
+    id = db.Column("id", db.Integer, primary_key=True )
+
+class Housing(db.Model):
+    SIZE = 20
+    id = db.Column("id", db.Integer, primary_key=True)
+    mortgage = db.Column("mortgage", db.Float(SIZE))
+    phone = db.Column("phone", db.Float(SIZE))
+    electricity = db.Column("electricity", db.Float(SIZE))
+    gas = db.Column("gas", db.Float(SIZE))
+    water = db.Column("water", db.Float(SIZE))
+    streaming = db.Column("streaming_services", db.Float(SIZE))
+    maintenance = db.Column("maintenance", db.Float(SIZE))
+    supplies = db.Column("supplies", db.Float(SIZE))
+    internet = db.Column("internet", db.Float(SIZE))
+    other = db.Column("other", db.Float(SIZE))
+    subtotal = db.Column("subtotal", db.Float(SIZE))
+
+
+
+
+

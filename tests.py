@@ -32,5 +32,7 @@ class FlaskTest(unittest.TestCase):
         statuscode = response.status_code
         self.assertEqual(statuscode, 500)
 
+
+
 if __name__ == " __main__":
     unittest.main()

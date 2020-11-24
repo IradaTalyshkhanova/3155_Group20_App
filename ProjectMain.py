@@ -10,6 +10,8 @@ from database import db
 from models import Note as Note
 from models import User as User
 from models import Todo as Todo
+from models import Budget as Budget
+from models import Housing as House
 
 app = Flask(__name__)     # create an app
 
@@ -121,6 +123,44 @@ def get_todo(todo_id):
     return render_template('todo.html', note=my_todo, user=a_user)
 
 # App route edit todo
+
+# App route to display budget
+@app.route('/budget')
+def get_budget():
+    a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
+    my_budget = db.session.query(Budget).all()
+
+    return render_template('budget.html', note=my_budget, user=a_user)
+
+@app.route('/budget/update',methods=['GET', 'POST'] )
+def update_budget():
+    # create mock user
+    a_user = {'name': 'Alec', 'email': 'aroseber@uncc.edu'}
+
+    # check method used for request
+    if request.method == 'POST':
+
+        mortgage = request.form['mortgage']
+        phone = request.form['phone']
+        electricity = request.form['electricity']
+        gas = request.form['gas']
+        water = request.form['water']
+        streaming = request.form['streaming']
+        maintenance = request.form['maintenance']
+        supplies = request.form['supplies']
+        internet = request.form['internet']
+        other = request.form['other']
+        subtotal = request.form['subtotal']
+
+        newEntry = House(mortgage, phone, electricity, gas, water, streaming, maintenance,
+                           supplies, internet, other, subtotal)
+        db.session.add(newEntry)
+        db.session.commit()
+        return redirect(url_for('get_budget'))
+    else:
+        a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
+        return render_template('budgetUpdate.html', user=a_user)
+
 
 
 

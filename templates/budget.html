@@ -14,13 +14,16 @@
 		<a href="{{ url_for('get_notes') }}"> My Notes</a> ||
 		<a href="{{ url_for('new_note') }}"> Add Note</a> ||
         <a href="{{ url_for('get_todos') }}"> Todo List</a> ||
-		<a href="{{ url_for('get_budget') }}"> Budget</a>
+		<a href="{{ url_for('get_budget') }}"> Budget</a> ||
+		<a href="{{ url_for('update_budget') }}"> Update Budget</a>
 		</nav>
 
         <h1>Welcome {{user.name}} to the 49er Notes App!</h1>
 
+
+
         <p>
-				{% if note %}
+				{% if budget %}
 					<input type="submit" value="Update Note"/>
 				{% else %}
 					<input type="submit" value="Add Budget"/>

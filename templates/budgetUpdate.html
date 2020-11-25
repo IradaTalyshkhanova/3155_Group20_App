@@ -18,17 +18,13 @@
 		</nav>
 
         <h1>Welcome {{user.name}} to the 49er Notes App!</h1>
-		{% if note %}
-			<form action="{{ url_for('update_budget', note_id=note.id) }}" method="post">
-		{% else %}
-        <form action="new" method="post">
-		{% endif %}
-			<p><label>Mortgage</label></p>
-			<p><input type="text" name="mortgage"/></p>
-            <p><label>Phone</label></p>
-			<p><input type="text" name="phone"	value="{% if note %}{{phone.title}} {% endif %}"/></p>
 
+        <div>Mortgage Cost $:
+                <form action= "/budget" method="POST">
+                    <input type="float" name="mortgage">
+                    <input type="submit">
+                </form>
+        </div>
 
-        </form>
     </body>
 </html>

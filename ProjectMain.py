@@ -125,12 +125,12 @@ def get_todo(todo_id):
 # App route edit todo
 
 # App route to display budget
-@app.route('/budget')
+@app.route('/budget', methods =['GET', 'POST'])
 def get_budget():
     a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
-    my_budget = db.session.query(Budget).all()
+    my_budget = db.session.query(House).all()
 
-    return render_template('budget.html', note=my_budget, user=a_user)
+    return render_template('budget.html', budget=my_budget, user=a_user)
 
 @app.route('/budget/update',methods=['GET', 'POST'] )
 def update_budget():
@@ -150,18 +150,27 @@ def update_budget():
         supplies = request.form['supplies']
         internet = request.form['internet']
         other = request.form['other']
-        subtotal = request.form['subtotal']
 
-        newEntry = House(mortgage, phone, electricity, gas, water, streaming, maintenance,
-                           supplies, internet, other, subtotal)
-        db.session.add(newEntry)
+        house = House(mortgage=mortgage) #mortgage, phone, electricity, gas, water, streaming, maintenance,
+                       #supplies, internet, other)
+
+        #house = House(request.form['mortgage'], request.form['phone'], request.form['electricity'],
+                      #request.form['gas'], request.form['water'], request.form['streaming'],
+                      #request.form['maintenance'], request.form['supplies'], request.form['internet'],
+                      #request.form['other'])
+        db.session.add(house)
         db.session.commit()
+
         return redirect(url_for('get_budget'))
     else:
+
         a_user = db.session.query(User).filter_by(email='aroseber@uncc.edu').one()
-        return render_template('budgetUpdate.html', user=a_user)
+        a_house = db.session.query(House).all()
+        return "There was an error"#render_template('budgetUpdate.html', user=a_user, house=a_house)
 
-
+@app.route('/test', methods =['GET', 'POST'])
+def get_test():
+    return '<h1>{}</h1>'.format(request.form['mortgage'])
 
 
 

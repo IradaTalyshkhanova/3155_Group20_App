@@ -1,0 +1,29 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="UNCC Notes App">
+        <title>UNCC Notes App</title>
+        <!-- styles -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+    <body>
+		<nav>
+            <a href="{{ url_for('index') }}"> Home</a> ||
+            <a href="{{ url_for('get_notes') }}"> My Notes</a> ||
+            <a href="{{ url_for('new_note') }}"> Add Note</a> ||
+            <a href="{{ url_for('get_todos') }}"> Todo List</a> ||
+            <a href="{{ url_for('get_budget') }}"> Budget</a>
+		</nav>
+        {% if user %}
+            <a href="{{ url_for('log_out') }}"><button type="button">LOG OUT</button></a> 
+		{% else %}
+			<a href="{{ url_for('log_in') }}"><button type="button">LOG IN</button></a> 
+		{% endif %}
+
+        <h1>Welcome {{user.name}} to the 49er Notes App!</h1>
+
+        {% block content %}{% endblock %}
+
+    </body>
+</html>

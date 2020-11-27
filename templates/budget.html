@@ -1,35 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="UNCC Notes App">
-        <title>UNCC Notes App - New Note</title>
-        <!-- styles -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    </head>
-    <body>
-        <nav>
-		<a href="{{ url_for('index') }}"> Home</a> ||
-		<a href="{{ url_for('get_notes') }}"> My Notes</a> ||
-		<a href="{{ url_for('new_note') }}"> Add Note</a> ||
-        <a href="{{ url_for('get_todos') }}"> Todo List</a> ||
-		<a href="{{ url_for('get_budget') }}"> Budget</a> ||
-		<a href="{{ url_for('update_budget') }}"> Update Budget</a>
-		</nav>
+{% extends "base.html" %}
 
-        <h1>Welcome {{user.name}} to the 49er Notes App!</h1>
+{% block content %}
+    <h2>Essential budget items (per month)</h2>
+    {% if my_budget %}
+        <form action="" method="POST">
+            <label>Mortgae/Rent</label><br>
+            <input type="text" id="housing" name="housing" value=""><br>
 
+            <label>Phone</label><br>
+            <input type="text" id="phone" name="phone" value=""><br>
 
+            <label>Electricity</label><br>
+            <input type="text" id="electricity" name="electricity" value=""><br>
 
-        <p>
-				{% if budget %}
-					<input type="submit" value="Update Note"/>
-				{% else %}
-					<input type="submit" value="Add Budget"/>
-				{% endif %}
-        </p>
+            <label>Gas</label><br>
+            <input type="text" id="gas" name="gas" value=""><br>
 
+            <label>Water</label><br>
+            <input type="text" id="water" name="water" value=""><br><br>
+
+            <label>Streaming</label><br>
+            <input type="text" id="streaming" name="streaming" value=""><br>
+
+            <label>Supplies</label><br>
+            <input type="text" id="supplies" name="supplies" value=""><br>
+
+            <label>Internet</label><br>
+            <input type="text" id="internet" name="internet" value=""><br>
+
+            <label>Other</label><br>
+            <input type="text" id="other" name="other" value=""><br>
+
+            {% if budget %}
+                <input type="submit" value="Update Note"/>
+            {% else %}
+                <input type="submit" value="Add Budget"/>
+            {% endif %}
         </form>
-    </body>
-</html>
+    {% else %}
+        <p>Please log in</p>
+    {% endif %}
+{% endblock %}

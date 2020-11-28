@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+	{% if todo %}
+		<form action="{{ url_for('update_todo', todo_id=todo.id) }}" method="post">
+	{% else %}
+	    <form action="new" method="post">
+	{% endif %}
+		<p><label>Todo </label></p>
+		<p>
+            {% if todo %}
+                <input name="description" value="{{todo.description}}"/>
+            {% else %}
+                <input name="description" value="Add your new todo here ..."/>
+            {% endif %}
+		</p>
+		<p>
+			{% if todo %}
+				<input type="submit" value="Update Todo"/>
+			{% else %}
+				<input type="submit" value="Add Todo"/>
+			{% endif %}
+		</p>
+	</form>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Listing All notes</h2>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+            </tr>
+            {% for note in all_notes %}
+            <tr>
+                <td><a href="{{ url_for('get_note', note_id=note.id) }}">{{ note.title }}</a></td>
+                <td>{{ note.date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h2>Listing my notes</h2>
+    {% if user %}
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                </tr>
+                {% for note in filtered_my_List %}
+                <tr>
+                    <td><a href="{{ url_for('get_note', note_id=note.id) }}">{{ note.title }}</a></td>
+                    <td>{{ note.date }}</td>
+                    <td><a href="{{ url_for('update_note', note_id=note.id) }}">Edit</a></td>
+                    <td>
+                        <form action="{{ url_for('delete_note', note_id=note.id) }}" method="post">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+    {% else %}
+        <p>Please log in</p>
+    {% endif %}
+{% endblock %}

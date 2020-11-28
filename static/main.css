@@ -8,3 +8,6 @@ h2{
     color:gold;
     background:green;
 }
+p.note{
+    white-space: pre;
+}

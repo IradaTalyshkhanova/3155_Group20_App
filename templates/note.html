@@ -11,8 +11,16 @@
             </tr>
             <tr>
                 <td>{{ note.title }}</td>
-                <td>{{ note.text }}</td>
+                <td><p class="note">{{ note.text }}</p></td>
                 <td>{{ note.date }}</td>
             </tr>
         </table>
+
+        <h2>Add a comment!</h2>
+		<p>
+			<textarea name="noteText" rows="6" cols="0">Add comment...</textarea>
+		</p>
+		<p>
+            <input type="submit" value="Add comment"/>
+		</p>
 {% endblock %}

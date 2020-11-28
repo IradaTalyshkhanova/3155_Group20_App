@@ -24,10 +24,23 @@ class User(db.Model):
 
 class Todo(db.Model):
     id = db.Column("id", db.Integer, primary_key=True )
-    todoTitle = db.Column("todo title", db.String(100))
+    description = db.Column("description", db.String(100))
+    complete = db.Column("complete", db.Boolean())
+    email = db.Column("email", db.String(100))
+    def __init__(self, description, complete, email):
+        self.description = description
+        self.complete = complete
+        self.email = email
 
-#class Task(db.Model):
-    #id = db.Column("id")
+class Comment(db.Model):
+    id = db.Column("id", db.Integer, primary_key=True )
+    comment = db.Column("comment", db.String(100))
+    email = db.Column("email", db.String(100))
+    noteId = db.Column("noteId", db.Integer)
+    def __init__(self, comment, email, noteId):
+        self.description = description
+        self.email = email
+        self.noteId = noteId
 
 class Budget(db.Model):
     id = db.Column("id", db.Integer, primary_key=True )
@@ -45,10 +58,10 @@ class Housing(db.Model):
     supplies = db.Column("supplies", db.Float(SIZE))
     internet = db.Column("internet", db.Float(SIZE))
     other = db.Column("other", db.Float(SIZE))
-    email = db.Column("other", db.String(100))
+    email = db.Column("email", db.String(100))
     subtotal = db.Column("subtotal", db.Float(SIZE))
 
-    def __init__(self, mortgage,phone, electricity, gas, water, streaming, maintenance,
+    def __init__(self, mortgage, phone, electricity, gas, water, streaming, maintenance,
                  supplies, internet, other, email):
         self.mortgage = mortgage
         self.phone = phone
@@ -56,7 +69,7 @@ class Housing(db.Model):
         self.gas = gas
         self.water = water
         self.streaming = streaming
-        self.streaming = maintenance
+        self.maintenance = maintenance
         self.supplies = supplies
         self.internet = internet
         self.other = other

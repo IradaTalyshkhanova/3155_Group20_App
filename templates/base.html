@@ -11,7 +11,6 @@
 		<nav>
             <a href="{{ url_for('index') }}"> Home</a> ||
             <a href="{{ url_for('get_notes') }}"> My Notes</a> ||
-            <a href="{{ url_for('new_note') }}"> Add Note</a> ||
             <a href="{{ url_for('get_todos') }}"> Todo List</a> ||
             <a href="{{ url_for('get_budget') }}"> Budget</a>
 		</nav>
@@ -20,6 +19,13 @@
 		{% else %}
 			<a href="{{ url_for('log_in') }}"><button type="button">LOG IN</button></a> 
 		{% endif %}
+
+        <form action="{{ url_for('search') }}" method="post">
+            <p><input type="text" name="search"	value=""/></p>
+            <p>
+                <input type="submit" value="Search for Note"/>
+            </p>
+	    </form>
 
         <h1>Welcome {{user.name}} to the 49er Notes App!</h1>
 

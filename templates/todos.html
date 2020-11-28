@@ -1,16 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% if user %}
         <h1>Todo List</h1>
         <table>
             <tr>
-                <th>All Todo List</th>
-
+                <th>Description</th>
             </tr>
-                {% if note %}
-					<input type="submit" value="Update Note"/>
-				{% else %}
-					<input type="submit" value="Add Todo"/>
-				{% endif %}
+            {% for todo in todos %}
+                <div>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="{{ todo.id }}" checked>
+                            {{ todo.description }}
+                            <a href="{{ url_for('update_todo', todo_id=todo.id) }}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                </div>
+            {% endfor %}
         </table>
+        <a href="{{ url_for('new_todo') }}"><button type="button">Add new Todo</button></a> 
+    {% else %}
+        <p>Please log in</p>
+    {% endif %}
 {% endblock %}

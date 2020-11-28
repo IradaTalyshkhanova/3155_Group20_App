@@ -30,7 +30,8 @@ a_user = False
 # get called. What it returns is what is shown as the web page
 @app.route('/')
 def index():
-    return render_template('index.html', user=a_user)
+    all_notes = db.session.query(Note).all()
+    return render_template('index.html', user=a_user, notes=all_notes)
 
 @app.route('/notes')
 def get_notes():
@@ -41,6 +42,26 @@ def get_notes():
         my_notes = db.session.query(Note).filter_by(email=a_user.email).all()
 
     return render_template('notes.html', notes=my_notes, user=a_user)
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    all_notes = db.session.query(Note).all()
+    search = request.form['search'].lower()
+
+    filtered_all_List = []
+    filtered_my_List = []
+
+    for note in all_notes:
+        if search in note.title.lower():
+            filtered_all_List.append(note)
+
+    if a_user:
+        my_notes = db.session.query(Note).filter_by(email=a_user.email).all()
+        for note in my_notes:
+            if search in note.title.lower():
+                filtered_my_List.append(note)
+
+    return render_template('search.html', all_notes=filtered_all_List, my_notes=filtered_my_List, user=a_user)
 
 @app.route('/notes/<note_id>')
 def get_note(note_id):
@@ -62,8 +83,8 @@ def delete_note(note_id):
 def update_note(note_id):
     if request.method == 'POST':
         title = request.form['title']
-
         text = request.form['noteText']
+        
         note = db.session.query(Note).filter_by(id=note_id).one()
 
         note.title = title
@@ -74,7 +95,6 @@ def update_note(note_id):
 
         return redirect(url_for('get_notes'))
     else:
-        #a_user = db.session.query(User).filter_by(email=a_user).one()
 
         my_note = db.session.query(Note).filter_by(id=note_id).one()
 
@@ -126,24 +146,44 @@ def register_account():
 # App route Display todo
 @app.route('/todo')
 def get_todos():
-    my_todo = db.session.query(Todo).all()
+    my_todo = False
+    if a_user:
+        my_todo = db.session.query(Todo).filter_by(email=a_user.email).all()
 
-    return render_template('todos.html', notes=my_todo, user=a_user)
+    return render_template('todos.html', todos=my_todo, user=a_user)
 
-# App route view specific todo
-@app.route('/todo/<todo_id>')
-def get_todo(todo_id):
-    #a_user = db.session.query(User).filter_by(email=a_user.email).one()
-    my_todo = db.session.query(Todo).filter_by(id=todo_id).one()
+# App route update todo
+@app.route('/todo/edit/<todo_id>', methods=['GET', 'POST'])
+def update_todo(todo_id):
+    todo = db.session.query(Todo).filter_by(id=todo_id).one()
+    if request.method == 'POST' and a_user:
+        todo.description = request.form['description']
 
-    return render_template('todo.html', note=my_todo, user=a_user)
+        db.session.add(todo)
+        db.session.commit()
 
-# App route edit todo
+        return redirect(url_for('get_todos'))
+    else:
+        return render_template('todo.html', user=a_user,todo=todo)
+
+# App route create a new todo
+@app.route('/todo/new', methods=['GET', 'POST'])
+def new_todo():
+    if request.method == 'POST' and a_user:
+        description = request.form['description']
+        email = a_user.email
+        complete = 0
+
+        newTodo = Todo(description, complete, email)
+        db.session.add(newTodo)
+        db.session.commit()
+        return redirect(url_for('get_todos'))
+    else:
+        return render_template('todo.html', user=a_user, todo=False)
 
 # App route to display budget
 @app.route('/budget', methods =['GET', 'POST'])
 def get_budget():
-    #a_user = db.session.query(User).filter_by(email=a_user.email).one()
     my_budget = False
     if a_user:
         my_budget = db.session.query(House).filter_by(email=a_user.email).one()
@@ -176,37 +216,27 @@ def log_out():
     a_user = False
     return redirect(url_for('index'))
 
-@app.route('/budget/update',methods=['GET', 'POST'] )
+@app.route('/budget/update', methods=['GET', 'POST'] )
 def update_budget():
     # check method used for request
     if request.method == 'POST':
+        house = db.session.query(House).filter_by(email=a_user.email).one()
 
-        mortgage = request.form['mortgage']
-        phone = request.form['phone']
-        electricity = request.form['electricity']
-        gas = request.form['gas']
-        water = request.form['water']
-        streaming = request.form['streaming']
-        maintenance = request.form['maintenance']
-        supplies = request.form['supplies']
-        internet = request.form['internet']
-        email = "nope"
-        other = request.form['other']
+        house.mortgage = request.form['housing']
+        house.phone = request.form['phone']
+        house.electricity = request.form['electricity']
+        house.gas = request.form['gas']
+        house.water = request.form['water']
+        house.streaming = request.form['streaming']
+        house.maintenance = request.form['maintenance']
+        house.supplies = request.form['supplies']
+        house.internet = request.form['internet']
+        house.other = request.form['other']
 
-        house = House(mortgage, phone, electricity, gas, water, streaming, maintenance, supplies, internet, other)
-
-        #house = House(request.form['mortgage'], request.form['phone'], request.form['electricity'],
-                      #request.form['gas'], request.form['water'], request.form['streaming'],
-                      #request.form['maintenance'], request.form['supplies'], request.form['internet'],
-                      #request.form['other'])
         db.session.add(house)
         db.session.commit()
 
         return redirect(url_for('get_budget'))
-    else:
-        #a_user = db.session.query(User).filter_by(email=a_user.email).one()
-        a_house = db.session.query(House).all()
-        return "There was an error"#render_template('budgetUpdate.html', user=a_user, house=a_house)
 
 @app.route('/test', methods =['GET', 'POST'])
 def get_test():

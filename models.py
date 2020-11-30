@@ -17,10 +17,12 @@ class User(db.Model):
     name = db.Column("name", db.String(100))
     email = db.Column("email", db.String(100))
     password = db.Column("password", db.String(100))
-    def __init__(self, name, email, password):
+    admin = db.Column("admin", db.Boolean())
+    def __init__(self, name, email, password, admin):
         self.name = name
         self.email = email
         self.password = password
+        self.admin = admin
 
 class Todo(db.Model):
     id = db.Column("id", db.Integer, primary_key=True )
@@ -38,7 +40,7 @@ class Comment(db.Model):
     email = db.Column("email", db.String(100))
     noteId = db.Column("noteId", db.Integer)
     def __init__(self, comment, email, noteId):
-        self.description = description
+        self.comment = comment
         self.email = email
         self.noteId = noteId
 

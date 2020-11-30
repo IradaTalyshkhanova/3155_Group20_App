@@ -10,6 +10,7 @@ from database import db
 from models import Note as Note
 from models import User as User
 from models import Todo as Todo
+from models import Comment as Comment
 from models import Budget as Budget
 from models import Housing as House
 
@@ -24,6 +25,7 @@ with app.app_context():
     db.create_all()   # run under the app context
 
 a_user = False
+user_log = []
 
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
@@ -61,15 +63,17 @@ def search():
             if search in note.title.lower():
                 filtered_my_List.append(note)
 
+    global user_log
+    user_log.append("User searched for '" + search + "'");
     return render_template('search.html', all_notes=filtered_all_List, my_notes=filtered_my_List, user=a_user)
 
 @app.route('/notes/<note_id>')
 def get_note(note_id):
-    #a_user = db.session.query(User).filter_by(email=a_user.email).one()
-
     my_note = db.session.query(Note).filter_by(id=note_id).one()
 
-    return render_template('note.html', note=my_note, user=a_user)
+    my_note_comment = db.session.query(Comment).filter_by(noteId=note_id).all()
+
+    return render_template('note.html', comments=my_note_comment, note=my_note, user=a_user)
 
 @app.route('/notes/delete/<note_id>', methods=['POST'])
 def delete_note(note_id):
@@ -77,7 +81,16 @@ def delete_note(note_id):
     db.session.delete(my_note)
     db.session.commit()
 
+    # delete comment from post
+    all_note_comment = db.session.query(Comment).filter_by(noteId=note_id).all()
+    for note in all_note_comment:
+        db.session.delete(note)
+        db.session.commit()
+
+    global user_log
+    user_log.append("User deleted note " + note_id);
     return redirect(url_for('get_notes'))
+
 
 @app.route('/notes/edit/<note_id>', methods =['GET', 'POST'])
 def update_note(note_id):
@@ -93,9 +106,10 @@ def update_note(note_id):
         db.session.add(note)
         db.session.commit()
 
+        global user_log
+        user_log.append("User edited note " + note_id);
         return redirect(url_for('get_notes'))
     else:
-
         my_note = db.session.query(Note).filter_by(id=note_id).one()
 
         return render_template('new.html', note=my_note, user=a_user)
@@ -116,9 +130,40 @@ def new_note():
         newEntry = Note(title, text, today, a_user.email)
         db.session.add(newEntry)
         db.session.commit()
+        global user_log
+        user_log.append("User created new note");
         return redirect(url_for('get_notes'))
     else:
         return render_template('new.html', user=a_user)
+
+# Add comment to note
+@app.route('/comment/<note_id>', methods =['GET', 'POST'])
+def add_comment(note_id):
+    comment = request.form['commentText']
+
+    newComment = Comment(comment, a_user.email, note_id)
+    db.session.add(newComment)
+    db.session.commit()
+
+    global user_log
+    user_log.append("User created new comment for note " + note_id);
+    my_note = db.session.query(Note).filter_by(id=note_id).one()
+
+    return render_template('note.html', note=my_note, user=a_user)
+
+# Delete comment to note
+@app.route('/comment/delete/comment=<comment_id>&note=<note_id>', methods =['POST'])
+def delete_comment(comment_id, note_id):
+    comment = db.session.query(Comment).filter_by(id=comment_id).one()
+    db.session.delete(comment)
+    db.session.commit()
+
+    global user_log
+    user_log.append("User deleted comment " + comment_id + " for note " + note_id);
+    my_note = db.session.query(Note).filter_by(id=note_id).one()
+
+    return render_template('note.html', note=my_note, user=a_user)
+
 
 # App route to register 
 @app.route('/register')
@@ -134,7 +179,7 @@ def register_account():
     # get note data
     password = request.form['password']
     # create user
-    newUser = User(name, email, password)
+    newUser = User(name, email, password, 1)
     db.session.add(newUser)
     db.session.commit()
 
@@ -162,6 +207,8 @@ def update_todo(todo_id):
         db.session.add(todo)
         db.session.commit()
 
+        global user_log
+        user_log.append("User updated todo " + todo_id);
         return redirect(url_for('get_todos'))
     else:
         return render_template('todo.html', user=a_user,todo=todo)
@@ -177,9 +224,35 @@ def new_todo():
         newTodo = Todo(description, complete, email)
         db.session.add(newTodo)
         db.session.commit()
+
+        global user_log
+        user_log.append("User created todo");
         return redirect(url_for('get_todos'))
     else:
         return render_template('todo.html', user=a_user, todo=False)
+
+# App route create a new todo
+@app.route('/todo/deleteAll', methods=['GET', 'POST'])
+def delete_all_todo():
+    all_todo = db.session.query(Todo).filter_by(email=a_user.email).all()
+    for todo in all_todo:
+        db.session.delete(todo)
+        db.session.commit()
+
+    global user_log
+    user_log.append("User deleted all todo");
+    return redirect(url_for('get_todos'))
+
+# App route create a new todo
+@app.route('/todo/delete/<todo_id>', methods=['GET', 'POST'])
+def delete_todo(todo_id):
+    todo = db.session.query(Todo).filter_by(id=todo_id).one()
+    db.session.delete(todo)
+    db.session.commit()
+
+    global user_log
+    user_log.append("User deleted todo " + todo_id);
+    return redirect(url_for('get_todos'))
 
 # App route to display budget
 @app.route('/budget', methods =['GET', 'POST'])
@@ -203,6 +276,8 @@ def log_in_check():
         get_user = db.session.query(User).filter_by(email=request.form['email']).one()
         if get_user.password == request.form['password']:
             a_user = get_user
+            global user_log
+            user_log.append("User logged in");
             return redirect(url_for('index'))
     except:
         print("Error getting user from database :: user not found?")
@@ -214,6 +289,9 @@ def log_in_check():
 def log_out():
     global a_user
     a_user = False
+    global user_log
+    print(user_log)
+    user_log = []
     return redirect(url_for('index'))
 
 @app.route('/budget/update', methods=['GET', 'POST'] )
@@ -236,6 +314,8 @@ def update_budget():
         db.session.add(house)
         db.session.commit()
 
+        global user_log
+        user_log.append("User updated budget ");
         return redirect(url_for('get_budget'))
 
 @app.route('/test', methods =['GET', 'POST'])

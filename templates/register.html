@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <script src="{% static '/main.js' %}"></script>
     <h1>Create new account</h1>
 
     <form action="{{ url_for('register_account') }}" method="post">

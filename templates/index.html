@@ -3,7 +3,7 @@
 {% block content %}
     <h2>Use this site to maintain and organize your notes.</h2>
 
-    <h3>All Course notes</h3>
+    <h3>Everyone's Course notes</h3>
         <table>
             <tr>
                 <th>Title</th>
@@ -13,6 +13,13 @@
             <tr>
                 <td><a href="{{ url_for('get_note', note_id=note.id) }}">{{ note.title }}</a></td>
                 <td>{{ note.date }}</td>
+                {% if user and user.admin %}
+                    <td>
+                        <form action="{{ url_for('delete_note', note_id=note.id) }}" method="post">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </table>

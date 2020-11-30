@@ -15,12 +15,30 @@
                 <td>{{ note.date }}</td>
             </tr>
         </table>
+        
+        <h3>Comments:</h3>
+        {% for comment in comments %}
+            <tr>
+                <p>{{ comment.comment }}</p>
+                {% if user %}
+                    {% if (user.email == comment.email) or user.admin %}
+                        <form action="{{ url_for('delete_comment', comment_id=comment.id, note_id=note.id) }}" method="post">
+                            <input type="submit" value="Delete">
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </tr>
+        {% endfor %}
 
-        <h2>Add a comment!</h2>
-		<p>
-			<textarea name="noteText" rows="6" cols="0">Add comment...</textarea>
-		</p>
-		<p>
-            <input type="submit" value="Add comment"/>
-		</p>
+        {% if user %}
+            <h2>Add a comment!</h2>
+            <form action="{{ url_for('add_comment', note_id=note.id) }}" method="post">
+                <p>
+                    <textarea name="commentText" rows="6" cols="0">Add comment...</textarea>
+                </p>
+                <p>
+                    <input type="submit" value="Add comment"/>
+                </p>
+            </form>
+        {% endif %}
 {% endblock %}

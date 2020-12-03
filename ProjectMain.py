@@ -149,7 +149,7 @@ def add_comment(note_id):
     user_log.append("User created new comment for note " + note_id);
     my_note = db.session.query(Note).filter_by(id=note_id).one()
 
-    return render_template('note.html', note=my_note, user=a_user)
+    return redirect(url_for('get_note', note_id=note_id))
 
 # Delete comment to note
 @app.route('/comment/delete/comment=<comment_id>&note=<note_id>', methods =['POST'])
@@ -162,7 +162,7 @@ def delete_comment(comment_id, note_id):
     user_log.append("User deleted comment " + comment_id + " for note " + note_id);
     my_note = db.session.query(Note).filter_by(id=note_id).one()
 
-    return render_template('note.html', note=my_note, user=a_user)
+    return redirect(url_for('get_note', note_id=note_id))
 
 
 # App route to register 
@@ -183,7 +183,7 @@ def register_account():
     db.session.add(newUser)
     db.session.commit()
 
-    house = House(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, email)
+    house = House(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, email, 0)
     db.session.add(house)
     db.session.commit()
     return redirect(url_for('index'))
@@ -193,13 +193,25 @@ def register_account():
 def get_todos():
     my_todo = False
     if a_user:
+        print(my_todo)
         my_todo = db.session.query(Todo).filter_by(email=a_user.email).all()
+        if len(my_todo) == 0:
+            my_todo = False
 
+    print(my_todo)
     return render_template('todos.html', todos=my_todo, user=a_user)
 
 # App route update todo
+@app.route('/todo/update')
+def update_todos():
+    #print(forms.CheckboxSelectMultiple);
+    #Countries = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=OPTIONS)
+
+    return redirect(url_for('get_todos'))
+
+# App route edit todo
 @app.route('/todo/edit/<todo_id>', methods=['GET', 'POST'])
-def update_todo(todo_id):
+def edit_todo(todo_id):
     todo = db.session.query(Todo).filter_by(id=todo_id).one()
     if request.method == 'POST' and a_user:
         todo.description = request.form['description']
@@ -258,10 +270,12 @@ def delete_todo(todo_id):
 @app.route('/budget', methods =['GET', 'POST'])
 def get_budget():
     my_budget = False
+    remaining = 0
     if a_user:
         my_budget = db.session.query(House).filter_by(email=a_user.email).one()
+        remaining = my_budget.subtotal - (my_budget.mortgage + my_budget.phone + my_budget.electricity + my_budget.gas + my_budget.water + my_budget.streaming + my_budget.maintenance + my_budget.supplies + my_budget.internet + my_budget.other)
 
-    return render_template('budget.html', budget=my_budget, user=a_user)
+    return render_template('budget.html', budget=my_budget, user=a_user, remaining=remaining)
 
 # App route to log in
 @app.route('/login')
@@ -300,6 +314,7 @@ def update_budget():
     if request.method == 'POST':
         house = db.session.query(House).filter_by(email=a_user.email).one()
 
+        house.subtotal = request.form['subtotal']
         house.mortgage = request.form['housing']
         house.phone = request.form['phone']
         house.electricity = request.form['electricity']

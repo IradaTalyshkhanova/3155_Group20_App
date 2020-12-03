@@ -2,7 +2,7 @@
 
 {% block content %}
 	{% if todo %}
-		<form action="{{ url_for('update_todo', todo_id=todo.id) }}" method="post">
+		<form action="{{ url_for('edit_todo', todo_id=todo.id) }}" method="post">
 	{% else %}
 	    <form action="new" method="post">
 	{% endif %}

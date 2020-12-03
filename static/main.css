@@ -1,13 +1,175 @@
 body {
-    padding: 30px 30px;
-    }
-h1{
+    margin: 0;
+}
+main {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+h1 {
     color:green;
 }
-h2{
+
+h2 {
     color:gold;
     background:green;
 }
-p.note{
-    white-space: pre;
+
+.note {
+    white-space:pre
+}
+
+.nav_bar {
+    display: flex;
+    background: #233A30;
+    color: white;
+    border-radius: 3px;
+    padding: 1em;
+    font-family: sans-serif;
+}
+
+li > a {
+    float: left;
+    display: block;
+    color: #B7A869;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+  
+li > a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.comment {
+    display: grid;
+    grid-template-columns: [labels] auto [controls] 1fr;
+    grid-auto-flow: row;
+    grid-gap: .8em;
+    background: #eee;
+    padding: 1.2em;
+}
+
+.comment > label  {
+    grid-column: labels;
+    grid-row: auto;
+}
+
+.comment > input,
+.comment > textarea,
+.comment > button {
+    grid-column: controls;
+    grid-row: auto;
+    border: none;
+    padding: 1em;
+}
+
+.nav_bar > ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex: 3;
+}
+
+.nav_bar li {
+    margin-right: 1em;
+}
+
+.nav_bar > form {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.nav_bar input {
+    flex: 1;
+}
+
+.nav_bar button {
+    background: white;
+    border: 0;
+    border-radius: 1em;
+    color: rgb(47, 116, 38);
+    padding: 0 1em;
+    margin-left: .3em;
+}
+
+@media screen and (max-width: 575px) {
+    .nav_bar {
+        flex-direction: column;
+    }
+    .nav_bar ul {
+        flex-direction: row; 
+        margin-bottom: 1em;
+    }
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    border-color: rgb(51, 45, 45);
+    border-style: solid;
+    border-width: 3px;  
+}
+
+.log_logo > h1 {
+    background-color: #1F5239;
+    color: white;
+}
+
+.login > h2 {  
+    text-align: center; 
+    background-color: transparent; 
+    color: green;  
+    padding: 20px;  
+}  
+
+#form {
+    text-align: center;
+}
+
+form#form > label {  
+    color: black;  
+    font-size: 17px;  
+}  
+
+#user {  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 3px;  
+    padding-left: 8px;  
+}  
+
+#pass {  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 3px;  
+    padding-left: 8px;  
+      
+}  
+
+.log {  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 17px;  
+    padding-left: 7px;  
+    color: black;  
+    background-color: #F9F0CA;
+}  
+
+.login > span {  
+    color: black;  
+    font-size: 17px;  
+}  
+
+th {
+    width: 150px;
 }

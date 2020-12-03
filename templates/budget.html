@@ -4,6 +4,9 @@
     <h2>Essential budget items (per month)</h2>
     {% if budget %}
         <form action="{{ url_for('update_budget') }}" method="post">
+            <label>Total</label><br>
+            <input type="text" id="subtotal" name="subtotal" value="{{budget.subtotal}}"><br><br>
+
             <label>Mortgage/Rent</label><br>
             <input type="text" id="housing" name="housing" value="{{budget.mortgage}}"><br>
 
@@ -33,6 +36,8 @@
 
             <label>Other</label><br>
             <input type="text" id="other" name="other" value="{{budget.other}}"><br>
+
+            <p>Remaining: {{remaining}}<p/><br>
 
             <input type="submit" value="Update Budget"/>
         </form>

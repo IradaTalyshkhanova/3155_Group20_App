@@ -2,29 +2,35 @@
 
 {% block content %}
     {% if user %}
-        <h1>Todo List</h1>
-        <table>
-            <tr>
-                <th>Description</th>
-            </tr>
-            {% for todo in todos %}
-                <div>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="complete" {% if todo.complete %} checked {% endif %}>
-                            {{ todo.description }}
-                            <a href="{{ url_for('edit_todo', todo_id=todo.id) }}"><button type="button">Edit</button></a>
-                            <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="post">
-                                <input type="submit" value="Delete">
-                            </form>
-                        </td>
-                    </tr>
-                </div>
-            {% endfor %}
-        </table>
-        <a href="{{ url_for('update_todo') }}"><button type="button">Update Todo</button></a> 
+        {% if todos %}
+            <h1>Todo List</h1>
+            <table>
+                <tr>
+                    <th>Description</th>
+                </tr>
+                {% for todo in todos %}
+                    <div>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="complete" {% if todo.complete %} checked {% endif %}>
+                                {{ todo.description }}
+                                <a href="{{ url_for('edit_todo', todo_id=todo.id) }}"><button type="button">Edit</button></a>
+                                <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="post">
+                                    <input type="submit" value="Delete">
+                                </form>
+                            </td>
+                        </tr>
+                    </div>
+                {% endfor %}
+            </table>
+            <div>
+                <form action="{{ url_for('update_todos') }}" method="post">
+                    <input type="submit" value="Update Todo">
+                </form>
+                <a href="{{ url_for('delete_all_todo') }}"><button type="button">Delete All</button></a> 
+            </div>
+        {% endif %}
         <a href="{{ url_for('new_todo') }}"><button type="button">Add new Todo</button></a> 
-        <a href="{{ url_for('delete_all_todo') }}"><button type="button">Delete All</button></a> 
     {% else %}
         <p>Please log in</p>
     {% endif %}

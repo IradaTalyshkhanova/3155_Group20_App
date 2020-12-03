@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <script src="{% static '/main.js' %}"></script>
-    <h1>Create new account</h1>
+    <div class="container">
+        <div class="login">
+            <h2>Create new account</h2>
 
-    <form action="{{ url_for('register_account') }}" method="post">
-        <label for="email">Email</label><br>
-        <input type="text" id="email" name="email" value=""><br>
-        <label for="name">Name</label><br>
-        <input type="text" id="name" name="name" value=""><br>
-        <label for="password">Password</label><br>
-        <input type="text" id="password" name="password" value=""><br>
-        <label for="password">Confirm Password</label><br>
-        <input type="text" id="confirm_password" name="confirm_password" value=""><br><br>
-        <input type="submit" value="Submit">
-    </form> 
+            <form id="form" action="{{ url_for('register_account') }}" method="post">
+                <label for="email">Email</label><br>
+                <input type="email" id="email" name="email" value=""><br>
+                <label for="name">Name</label><br>
+                <input type="text" id="name" name="name" value=""><br>
+                <label for="password">Password</label><br>
+                <input onchange="password_strength(this.value)" type="password" id="password" name="password" value=""><br>
+                <label for="password">Confirm Password</label><br>
+                <input onchange="password_match(this.value)" type="password" id="confirm_password" name="confirm_password" value=""><br><br>
+                <input type="submit" class="log" id="register_submit" value="Submit" disabled>
+            </form> 
+        </div>
+    </div>
 {% endblock %}
+

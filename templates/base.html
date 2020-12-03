@@ -7,29 +7,37 @@
         <!-- styles -->
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
+    <script type="text/javascript"
+         src="{{ url_for('static', filename='main.js') }}"></script>
     <body>
-		<nav>
-            <a href="{{ url_for('index') }}"> Home</a> ||
-            <a href="{{ url_for('get_notes') }}"> My Notes</a> ||
-            <a href="{{ url_for('get_todos') }}"> Todo List</a> ||
-            <a href="{{ url_for('get_budget') }}"> Budget</a>
-		</nav>
-        {% if user %}
-            <a href="{{ url_for('log_out') }}"><button type="button">LOG OUT</button></a> 
-		{% else %}
-			<a href="{{ url_for('log_in') }}"><button type="button">LOG IN</button></a> 
-		{% endif %}
+        <header id="header">
+            <div class="log_logo">
+                <h1>49er Note</h1>
+                {% if user %}
+                    <a href="{{ url_for('log_out') }}"><button type="button">LOG OUT</button></a> 
+                {% else %}
+                    <a href="{{ url_for('log_in') }}"><button type="button">LOG IN</button></a> 
+                {% endif %}
+            </dib>
+            <nav class="nav_bar">
+                <ul>
+                    <li><a href="{{ url_for('index') }}"> Home</a></li>
+                    <li><a href="{{ url_for('get_notes') }}"> My Notes</a></li>
+                    <li><a href="{{ url_for('get_todos') }}"> Todo List</a></li>
+                    <li><a href="{{ url_for('get_budget') }}"> Budget</a></li>
+                </ul>
+                <div id="parent_search">
+                    <form id="form_search" action="{{ url_for('search') }}" method="post">
+                        <input type="text" name="search" value=""/>
+                        <input type="submit" value="Search for Note"/>
+                    </form>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <h2 style="text-align: center;">Welcome {{user.name}} to the 49er Note App!</h2>
 
-        <form action="{{ url_for('search') }}" method="post">
-            <p><input type="text" name="search"	value=""/></p>
-            <p>
-                <input type="submit" value="Search for Note"/>
-            </p>
-	    </form>
-
-        <h1>Welcome {{user.name}} to the 49er Notes App!</h1>
-
-        {% block content %}{% endblock %}
-
+            {% block content %}{% endblock %}
+        </main>
     </body>
 </html>

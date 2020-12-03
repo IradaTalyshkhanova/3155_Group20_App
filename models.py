@@ -64,7 +64,7 @@ class Housing(db.Model):
     subtotal = db.Column("subtotal", db.Float(SIZE))
 
     def __init__(self, mortgage, phone, electricity, gas, water, streaming, maintenance,
-                 supplies, internet, other, email):
+                 supplies, internet, other, email, subtotal):
         self.mortgage = mortgage
         self.phone = phone
         self.electricity = electricity
@@ -76,6 +76,7 @@ class Housing(db.Model):
         self.internet = internet
         self.other = other
         self.email = email
+        self.subtotal = subtotal
 
 
 

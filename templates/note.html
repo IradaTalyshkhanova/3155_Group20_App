@@ -3,19 +3,22 @@
 {% block content %}
         <h2>Note details</h2>
 
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Text</th>
-                <th>Date</th>
-            </tr>
-            <tr>
-                <td>{{ note.title }}</td>
-                <td><p class="note">{{ note.text }}</p></td>
-                <td>{{ note.date }}</td>
-            </tr>
-        </table>
-        
+        <p>Title: {{ note.title }}</p>
+        <p>Date: {{ note.date }}</p>
+        <p class="note">{{ note.text }}</p>
+
+        {% if user %}
+            <form class="comment" action="{{ url_for('add_comment', note_id=note.id) }}" method="post">
+                <h3>Add a comment!</h3><br>
+                <p>
+                    <textarea name="commentText" rows="6" cols="0">Add comment...</textarea>
+                </p>
+                <p>
+                    <input type="submit" value="Add comment"/>
+                </p>
+            </form>
+        {% endif %}
+
         <h3>Comments:</h3>
         {% for comment in comments %}
             <tr>
@@ -29,16 +32,4 @@
                 {% endif %}
             </tr>
         {% endfor %}
-
-        {% if user %}
-            <h2>Add a comment!</h2>
-            <form action="{{ url_for('add_comment', note_id=note.id) }}" method="post">
-                <p>
-                    <textarea name="commentText" rows="6" cols="0">Add comment...</textarea>
-                </p>
-                <p>
-                    <input type="submit" value="Add comment"/>
-                </p>
-            </form>
-        {% endif %}
 {% endblock %}

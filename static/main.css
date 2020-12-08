@@ -22,7 +22,6 @@ h2 {
     display: flex;
     background: #233A30;
     color: white;
-    border-radius: 3px;
     padding: 1em;
     font-family: sans-serif;
 }
@@ -118,8 +117,15 @@ li > a:hover {
 }
 
 .log_logo > h1 {
-    background-color: #1F5239;
     color: white;
+}
+
+.log_logo > a {
+    float: right;
+}
+
+.log_logo {
+    background-color: #1F5239;
 }
 
 .login > h2 {  
@@ -131,6 +137,10 @@ li > a:hover {
 
 #form {
     text-align: center;
+}
+
+#log_button {
+    margin: 7px;
 }
 
 form#form > label {  
@@ -165,6 +175,16 @@ form#form > label {
     background-color: #F9F0CA;
 }  
 
+.log:disabled {  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 17px;  
+    padding-left: 7px;  
+    color: black;  
+    background-color:lightgrey;
+}  
+
 .login > span {  
     color: black;  
     font-size: 17px;  
@@ -172,4 +192,32 @@ form#form > label {
 
 th {
     width: 150px;
+}
+
+#form_search {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#error_reg {
+    text-align: center;
+}
+
+#form_todo_update {
+    margin-bottom: 0px;
+    float: left;
+    margin-right: 5px;
+}
+
+#todo_config {
+    margin: 10px;
+    float: right;
+}
+
+#todo_config > form {
+    float: right;
+}
+
+#logo {
+    margin-bottom: 0px;
 }

@@ -12,13 +12,13 @@
     <body>
         <header id="header">
             <div class="log_logo">
-                <h1>49er Note</h1>
                 {% if user %}
-                    <a href="{{ url_for('log_out') }}"><button type="button">LOG OUT</button></a> 
+                    <a href="{{ url_for('log_out') }}"><button id="log_button" type="button">LOG OUT</button></a> 
                 {% else %}
-                    <a href="{{ url_for('log_in') }}"><button type="button">LOG IN</button></a> 
+                    <a href="{{ url_for('log_in') }}"><button id="log_button" type="button">LOG IN</button></a> 
                 {% endif %}
-            </dib>
+                <h1 id="logo">49er Note</h1>
+            </div>
             <nav class="nav_bar">
                 <ul>
                     <li><a href="{{ url_for('index') }}"> Home</a></li>
@@ -26,11 +26,13 @@
                     <li><a href="{{ url_for('get_todos') }}"> Todo List</a></li>
                     <li><a href="{{ url_for('get_budget') }}"> Budget</a></li>
                 </ul>
-                <div id="parent_search">
-                    <form id="form_search" action="{{ url_for('search') }}" method="post">
-                        <input type="text" name="search" value=""/>
-                        <input type="submit" value="Search for Note"/>
-                    </form>
+                <div>
+                    <div id="parent_search">
+                        <form id="form_search" action="{{ url_for('search') }}" method="post">
+                            <input type="text" name="search" value=""/>
+                            <input type="submit" value="Search for Note"/>
+                        </form>
+                    </div>
                 </div>
             </nav>
         </header>

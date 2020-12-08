@@ -3,7 +3,7 @@
 {% block content %}
     {% if user %}
         {% if todos %}
-            <h1>Todo List</h1>
+            <h2>Todo List:</h2>
             <table>
                 <tr>
                     <th>Description</th>
@@ -14,23 +14,27 @@
                             <td>
                                 <input type="checkbox" name="complete" {% if todo.complete %} checked {% endif %}>
                                 {{ todo.description }}
-                                <a href="{{ url_for('edit_todo', todo_id=todo.id) }}"><button type="button">Edit</button></a>
-                                <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="post">
-                                    <input type="submit" value="Delete">
-                                </form>
+                                <div id="todo_config">
+                                    <a href="{{ url_for('edit_todo', todo_id=todo.id) }}"><button type="button">Edit</button></a>
+                                    <form action="{{ url_for('delete_todo', todo_id=todo.id) }}" method="post">
+                                        <input type="submit" value="Delete">
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     </div>
                 {% endfor %}
             </table>
             <div>
-                <form action="{{ url_for('update_todos') }}" method="post">
+                <form id="form_todo_update" action="{{ url_for('update_todos') }}" method="post">
                     <input type="submit" value="Update Todo">
                 </form>
                 <a href="{{ url_for('delete_all_todo') }}"><button type="button">Delete All</button></a> 
-            </div>
+        {% else %}
+            <div>
         {% endif %}
         <a href="{{ url_for('new_todo') }}"><button type="button">Add new Todo</button></a> 
+        </div>
     {% else %}
         <p>Please log in</p>
     {% endif %}

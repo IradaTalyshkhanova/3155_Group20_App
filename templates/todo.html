@@ -6,7 +6,8 @@
 	{% else %}
 	    <form action="new" method="post">
 	{% endif %}
-		<p><label>Todo </label></p>
+		<p id="error_todo"></p>
+		<h3>>Todo</h3>
 		<p>
             {% if todo %}
                 <input name="description" value="{{todo.description}}"/>
@@ -16,9 +17,9 @@
 		</p>
 		<p>
 			{% if todo %}
-				<input type="submit" value="Update Todo"/>
+				<input type="submit" id="submit_todo" value="Update Todo"/>
 			{% else %}
-				<input type="submit" value="Add Todo"/>
+				<input type="submit" id="submit_todo" value="Add Todo"/>
 			{% endif %}
 		</p>
 	</form>

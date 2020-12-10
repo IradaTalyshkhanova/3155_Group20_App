@@ -26,6 +26,7 @@ with app.app_context():
 
 a_user = False
 user_log = []
+budget_error = False
 
 # @app.route is a decorator. It gives the function "index" special powers.
 # In this case it makes it so anyone going to "your-url/" makes this function
@@ -179,14 +180,14 @@ def register_account():
     # get note data
     password = request.form['password']
     # create user
-    newUser = User(name, email, password, 1)
+    newUser = User(name, email, password, 0)
     db.session.add(newUser)
     db.session.commit()
 
     house = House(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, email, 0)
     db.session.add(house)
     db.session.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('log_in'))
 
 # App route Display todo
 @app.route('/todo')
@@ -202,10 +203,9 @@ def get_todos():
     return render_template('todos.html', todos=my_todo, user=a_user)
 
 # App route update todo
-@app.route('/todo/update')
-def update_todos():
-    #print(forms.CheckboxSelectMultiple);
-    #Countries = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=OPTIONS)
+@app.route('/todo/save', methods=['POST'])
+def save_todos():
+    print(request.form.getlist("complete"))
 
     return redirect(url_for('get_todos'))
 
@@ -275,12 +275,12 @@ def get_budget():
         my_budget = db.session.query(House).filter_by(email=a_user.email).one()
         remaining = my_budget.subtotal - (my_budget.mortgage + my_budget.phone + my_budget.electricity + my_budget.gas + my_budget.water + my_budget.streaming + my_budget.maintenance + my_budget.supplies + my_budget.internet + my_budget.other)
 
-    return render_template('budget.html', budget=my_budget, user=a_user, remaining=remaining)
+    return render_template('budget.html', budget=my_budget, user=a_user, remaining=remaining, error=budget_error)
 
 # App route to log in
 @app.route('/login')
 def log_in():
-    return render_template('login.html',  user=False)
+    return render_template('login.html',  user=False, error = False)
 
 # App route to check if user has account
 @app.route('/login/check', methods =['GET', 'POST'])
@@ -296,7 +296,7 @@ def log_in_check():
     except:
         print("Error getting user from database :: user not found?")
         a_user = False
-    return redirect(url_for('log_in'))
+    return render_template('login.html',  user=False, error="Incorrect email or password. Please try again.")
 
 # App route to log out
 @app.route('/logout')
@@ -308,23 +308,58 @@ def log_out():
     user_log = []
     return redirect(url_for('index'))
 
+#helper for budget update
+def helperMethodBudget(value):
+    new_int = value
+    new_int = new_int.replace('.', '')
+    return new_int
+
 @app.route('/budget/update', methods=['GET', 'POST'] )
 def update_budget():
     # check method used for request
+    global budget_error
+    budget_error = False
     if request.method == 'POST':
         house = db.session.query(House).filter_by(email=a_user.email).one()
 
         house.subtotal = request.form['subtotal']
+        if helperMethodBudget(house.subtotal).isnumeric() == False:
+            print(house.subtotal)
+            budget_error = "There was an error with your request."
         house.mortgage = request.form['housing']
+        if helperMethodBudget(house.mortgage).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.phone = request.form['phone']
+        if helperMethodBudget(house.phone).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.electricity = request.form['electricity']
+        if helperMethodBudget(house.electricity).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.gas = request.form['gas']
+        if helperMethodBudget(house.gas).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.water = request.form['water']
+        if helperMethodBudget(house.water).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.streaming = request.form['streaming']
+        if helperMethodBudget(house.streaming).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.maintenance = request.form['maintenance']
+        if helperMethodBudget(house.maintenance).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.supplies = request.form['supplies']
+        if helperMethodBudget(house.supplies).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.internet = request.form['internet']
+        if helperMethodBudget(house.internet).isnumeric()== False:
+            budget_error = "There was an error with your request."
         house.other = request.form['other']
+        if helperMethodBudget(house.other).isnumeric()== False:
+            budget_error = "There was an error with your request."
+
+        print(budget_error)
+        if budget_error:
+            return redirect(url_for('get_budget'))
 
         db.session.add(house)
         db.session.commit()

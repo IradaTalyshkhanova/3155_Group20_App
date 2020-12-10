@@ -7,12 +7,12 @@
 	    <form action="new" method="post">
 	{% endif %}
 		<p id="error_todo"></p>
-		<h3>>Todo</h3>
+		<h3>Todo</h3>
 		<p>
             {% if todo %}
-                <input name="description" value="{{todo.description}}"/>
+                <input name="description" required value="{{todo.description}}"/>
             {% else %}
-                <input name="description" value="Add your new todo here ..."/>
+                <input name="description" required value="Add your new todo here ..."/>
             {% endif %}
 		</p>
 		<p>

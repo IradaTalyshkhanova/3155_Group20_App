@@ -1,17 +1,21 @@
 body {
     margin: 0;
 }
+
 main {
     padding-left: 1%;
     padding-right: 1%;
 }
+
 h1 {
     color:green;
 }
 
-h2 {
-    color:gold;
-    background:green;
+#header_welcome {
+    text-align: center;
+    color: white;
+    background-color: #21352b;
+    margin: 0px;
 }
 
 .note {
@@ -108,6 +112,7 @@ li > a:hover {
 .container {
     max-width: 500px;
     margin: auto;
+    margin-top: 10em;
     background: white;
     padding: 10px;
     border-radius: 15px;
@@ -210,7 +215,7 @@ th {
 }
 
 #todo_config {
-    margin: 10px;
+    margin-left: 10px;
     float: right;
 }
 
@@ -220,4 +225,41 @@ th {
 
 #logo {
     margin-bottom: 0px;
+    margin-left: 10px;
+}
+
+#error_log_in {
+    text-align: center;
+    color: red;
+}
+
+input[type=checkbox]:checked + label.strikethrough{
+    text-decoration: line-through;
+}
+
+td {
+    text-align: center;
+}
+
+#note_delete {
+    float: right;
+    margin-bottom: 0px;
+}
+
+#header_tr {
+    border-bottom: 1px solid black;
+}
+
+table {
+    border-collapse: collapse; 
+}
+
+#todo_td {
+    text-align: inherit;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.padding_space {
+    padding-top: 20px;
 }

@@ -1,6 +1,7 @@
 var strongRegexPass = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 var mediumRegexPass = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
 var noteTitleRegex = new RegExp("^[a-zA-Z0-9]{4,10}$");
+var budgetRegex = /^(?<=^| )\d+(\.\d+)?(?=$| )|(?<=^| )\.\d+(?=$| )$/;
 
 password_strength = function(value) {
     if(strongRegexPass.test(value)) {
@@ -58,5 +59,16 @@ todo_field = function(value) {
         document.getElementById('submit_todo').disabled = false;
     } else {
         document.getElementById('submit_todo').disabled = true;
+    }
+}
+
+budget_field_check = function(value) {
+    console.log(value)
+    if(budgetRegex.test(value)) {
+        console.log("passed")
+        document.getElementById('budget_submit').disabled = false;
+    } else {
+        console.log("fail")
+        document.getElementById('budget_submit').disabled = true;
     }
 }

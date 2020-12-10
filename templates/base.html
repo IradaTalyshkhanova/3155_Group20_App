@@ -17,7 +17,7 @@
                 {% else %}
                     <a href="{{ url_for('log_in') }}"><button id="log_button" type="button">LOG IN</button></a> 
                 {% endif %}
-                <h1 id="logo">49er Note</h1>
+                <h1 id="logo">Life Guide</h1>
             </div>
             <nav class="nav_bar">
                 <ul>
@@ -35,10 +35,9 @@
                     </div>
                 </div>
             </nav>
+            <h2 id="header_welcome">Welcome {{user.name}}!</h2>
         </header>
         <main>
-            <h2 style="text-align: center;">Welcome {{user.name}} to the 49er Note App!</h2>
-
             {% block content %}{% endblock %}
         </main>
     </body>

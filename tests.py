@@ -32,7 +32,20 @@ class FlaskTest(unittest.TestCase):
         statuscode = response.status_code
         self.assertEqual(statuscode, 500)
 
+    def test_login_page():
+        response = requests.get('http://127.0.0.1:5000/')
+        statuscode = response.status_code
+        self.assertEqual(statuscode, 500)
 
+    def test_registration_page():
+        response = requests.get('http://127.0.0.1:5000/')
+        statuscode = response.status_code
+        self.assertEqual(statuscode, 500)
+
+    def test_registration_creation():
+        response = requests.get('http://127.0.0.1:5000/')
+        statuscode = response.status_code
+        self.assertEqual(statuscode, 500)
 
 if __name__ == " __main__":
     unittest.main()

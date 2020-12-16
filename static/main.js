@@ -7,42 +7,30 @@ password_strength = function(value) {
     if(strongRegexPass.test(value)) { // check if strong password
         console.log("Strong");
         pass_err = "Passwords is strong strength.";
-        document.getElementById('register_submit').disabled = false || password_match(pass_err) || all_fields_complete();
+        document.getElementById('register_submit').disabled = false || password_match(pass_err);
     } else if(mediumRegexPass.test(value)) { // check if med password
         console.log("Medium");
         pass_err = "Passwords is medium strength.";
-        document.getElementById('register_submit').disabled = false || password_match(pass_err) || all_fields_complete();
+        document.getElementById('register_submit').disabled = false || password_match(pass_err);
     } else { // else is weak
         console.log("Weak");
-        pass_err = "Passwords is too weak.";
-        document.getElementById('register_submit').disabled = true || password_match(pass_err) || all_fields_complete();
+        pass_err = "Passwords is too weak and/or do not match";
+        document.getElementById("error_reg").innerHTML = pass_err;
+        document.getElementById('register_submit').disabled = true;
     }
 };
 
 password_match = function(pass_err) {
     if(document.getElementById("password").value === document.getElementById("confirm_password").value) { // does password and confirm password field match
         console.log("Match");
-        document.getElementById("error_reg").innerHTML = pass_err + "";
+        document.getElementById("error_reg").innerHTML = pass_err;
         return false;
     } else {
         console.log("Not Match");
-        document.getElementById("error_reg").innerHTML = pass_err + " Passwords do not match";
+        document.getElementById("error_reg").innerHTML = "Passwords do not match";
         return true;
     }
 };
-
-all_fields_complete = function() { // are all fields filled in
-    if(document.getElementById("email").value.length > 0 &&
-        document.getElementById("name").value.length > 0 &&
-        document.getElementById("password").value.length > 0 &&
-        document.getElementById("confirm_password").value.length > 0) {
-        console.log("Done!");
-        return false;
-    } else {
-        console.log("Not done!");
-        return true;
-    }
-}
 
 // not used
 title_pass = function(value) {

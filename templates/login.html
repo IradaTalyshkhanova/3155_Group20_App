@@ -9,9 +9,9 @@
 	    {% endif %}
         <form id="form" action="{{ url_for('log_in_check') }}" method="post">
             <label for="email" id="user">Email</label><br>
-            <input type="email" id="email" name="email" value=""><br><br>
+            <input required type="email" id="email" name="email" value=""><br><br>
             <label for="password" id="pass">Password</label><br>
-            <input type="password" id="password" name="password" value=""><br><br>
+            <input required type="password" id="password" name="password" value=""><br><br>
             <input type="submit" class="log" value="Submit">
         </form> 
 
